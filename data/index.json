@@ -1,0 +1,158 @@
+{
+ "styles": [
+  "pop_ballad",
+  "metal_punk",
+  "funk",
+  "jazz_blues",
+  "country_folk"
+ ],
+ "arms": [
+  "baseline",
+  "prompt_full",
+  "abc_klw_g0p5",
+  "caa_l4_c2p0",
+  "random_klw"
+ ],
+ "seed_pair": 1,
+ "songs": [
+  {
+   "id": "scaled_014",
+   "title": "Public garden / perspective 2"
+  },
+  {
+   "id": "scaled_032",
+   "title": "Desert well / perspective 4"
+  },
+  {
+   "id": "scaled_048",
+   "title": "River survey / perspective 4"
+  },
+  {
+   "id": "scaled_061",
+   "title": "Museum store / perspective 1"
+  },
+  {
+   "id": "scaled_077",
+   "title": "Community kitchen / perspective 1"
+  },
+  {
+   "id": "scaled_093",
+   "title": "Bus depot / perspective 1"
+  },
+  {
+   "id": "scaled_109",
+   "title": "Attic sorting / perspective 1"
+  },
+  {
+   "id": "scaled_125",
+   "title": "Reservoir path / perspective 1"
+  }
+ ],
+ "table": {
+  "baseline": {
+   "n": 150,
+   "clap": 30,
+   "gemini": 30,
+   "incomplete": 0,
+   "mean_seconds": 53.2,
+   "clap_by_style": {
+    "pop_ballad": 27,
+    "metal_punk": 0,
+    "funk": 0,
+    "jazz_blues": 0,
+    "country_folk": 3
+   },
+   "gemini_by_style": {
+    "pop_ballad": 14,
+    "metal_punk": 1,
+    "funk": 0,
+    "jazz_blues": 0,
+    "country_folk": 15
+   }
+  },
+  "prompt_full": {
+   "n": 150,
+   "clap": 113,
+   "gemini": 111,
+   "incomplete": 0,
+   "mean_seconds": 66.2,
+   "clap_by_style": {
+    "pop_ballad": 29,
+    "metal_punk": 17,
+    "funk": 13,
+    "jazz_blues": 29,
+    "country_folk": 25
+   },
+   "gemini_by_style": {
+    "pop_ballad": 24,
+    "metal_punk": 12,
+    "funk": 15,
+    "jazz_blues": 30,
+    "country_folk": 30
+   }
+  },
+  "abc_klw_g0p5": {
+   "n": 150,
+   "clap": 133,
+   "gemini": 126,
+   "incomplete": 4,
+   "mean_seconds": 84.4,
+   "clap_by_style": {
+    "pop_ballad": 30,
+    "metal_punk": 24,
+    "funk": 25,
+    "jazz_blues": 27,
+    "country_folk": 27
+   },
+   "gemini_by_style": {
+    "pop_ballad": 25,
+    "metal_punk": 23,
+    "funk": 22,
+    "jazz_blues": 27,
+    "country_folk": 29
+   }
+  },
+  "caa_l4_c2p0": {
+   "n": 150,
+   "clap": 118,
+   "gemini": 120,
+   "incomplete": 23,
+   "mean_seconds": 176.5,
+   "clap_by_style": {
+    "pop_ballad": 26,
+    "metal_punk": 22,
+    "funk": 26,
+    "jazz_blues": 21,
+    "country_folk": 23
+   },
+   "gemini_by_style": {
+    "pop_ballad": 24,
+    "metal_punk": 22,
+    "funk": 25,
+    "jazz_blues": 23,
+    "country_folk": 26
+   }
+  },
+  "random_klw": {
+   "n": 150,
+   "clap": 34,
+   "gemini": 33,
+   "incomplete": 1,
+   "mean_seconds": 58.4,
+   "clap_by_style": {
+    "pop_ballad": 27,
+    "metal_punk": 0,
+    "funk": 0,
+    "jazz_blues": 3,
+    "country_folk": 4
+   },
+   "gemini_by_style": {
+    "pop_ballad": 13,
+    "metal_punk": 0,
+    "funk": 0,
+    "jazz_blues": 0,
+    "country_folk": 20
+   }
+  }
+ }
+}

@@ -4,16 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Music Circuit Demo</title>
-<meta name="description" content="Audio and score examples for Music Circuit: steering musical style in YuE2 through a sparse style circuit, without any style text.">
+<meta name="description" content="Steering a sparse style circuit in YuE2 writes the same lyrics in five styles, without any style text.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
 <style>
 :root {
   color-scheme: light;
   --ground: #F1F3F6; --surface: #FFFFFF; --sunk: #E7EAEF; --ink: #141B24; --muted: #596474; --faint: #8A93A1; --rule: #D8DDE4;
-  --accent: #0B6E69; --accent-ink: #FFFFFF; --accent-soft: #D6ECEA;
-  --hit: #1D7A45; --hit-bg: #DDF1E4; --miss: #A63A2B; --miss-bg: #F7E1DC; --warn: #7D5300; --warn-bg: #F6EBD3;
+  --accent: #0B6E69;
   --pop: #C0417A; --metal: #A3282E; --funk: #A66300; --blues: #2F55C9; --country: #557419; --neutral: #3E4A5A; --inst: #A3ADBB;
   --plate: #FFFFFF;
   --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
@@ -24,8 +23,7 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --ground: #0F1419; --surface: #171D24; --sunk: #1F262F; --ink: #E3E8EE; --muted: #9AA5B2; --faint: #6B7582; --rule: #2B333D;
-    --accent: #52C7BE; --accent-ink: #0F1419; --accent-soft: #173634;
-    --hit: #6FD19A; --hit-bg: #173222; --miss: #F28B78; --miss-bg: #3A221D; --warn: #E6B45A; --warn-bg: #3A2E17;
+    --accent: #52C7BE;
     --pop: #EE7FAE; --metal: #EE7479; --funk: #E8A94A; --blues: #86A2F5; --country: #A9C866; --neutral: #C3CCD7; --inst: #56616F;
     --plate: #F4F6F8;
   }
@@ -33,61 +31,35 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --ground: #0F1419; --surface: #171D24; --sunk: #1F262F; --ink: #E3E8EE; --muted: #9AA5B2; --faint: #6B7582; --rule: #2B333D;
-  --accent: #52C7BE; --accent-ink: #0F1419; --accent-soft: #173634;
-  --hit: #6FD19A; --hit-bg: #173222; --miss: #F28B78; --miss-bg: #3A221D; --warn: #E6B45A; --warn-bg: #3A2E17;
+  --accent: #52C7BE;
   --pop: #EE7FAE; --metal: #EE7479; --funk: #E8A94A; --blues: #86A2F5; --country: #A9C866; --neutral: #C3CCD7; --inst: #56616F;
   --plate: #F4F6F8;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { scroll-padding-top: 88px; }
 body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-main { max-width: 1140px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 56px; }
+main { max-width: 1100px; margin: 0 auto; padding-inline: 20px; padding-block: 44px 56px; display: grid; gap: 44px; }
 h1, h2, h3 { margin: 0; text-wrap: balance; }
-h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.12; letter-spacing: -0.01em; max-width: 22ch; }
+h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(28px, 4vw, 42px); line-height: 1.12; letter-spacing: -0.01em; }
 h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.2; }
 h3 { font-size: 15px; font-weight: 600; }
 p { margin: 0; }
-a { color: var(--accent); text-underline-offset: 2px; }
-code, .mono { font-family: var(--mono); font-size: 0.92em; }
-.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.prose { max-width: 68ch; color: var(--ink); display: grid; gap: 10px; }
-.prose.muted, .muted { color: var(--muted); }
-section { display: grid; gap: 20px; }
-.section-head { display: grid; gap: 8px; }
-button:focus-visible, a:focus-visible, summary:focus-visible, canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus-visible, canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* hero */
-.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 36px 48px; align-items: start; }
-.hero-text { display: grid; gap: 16px; }
-.authors { font-size: 15px; color: var(--muted); }
-.nav { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; }
-.nav a { text-decoration: none; font-weight: 500; }
-.nav a:hover { text-decoration: underline; }
-.scoreboard { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 18px 14px; display: grid; gap: 12px; }
-.scoreboard h2 { font-family: var(--sans); font-size: 14px; font-weight: 600; }
-.scoreboard .sub { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
-.sb-grid { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 7px 12px; align-items: center; font-size: 13px; }
-.sb-grid .colhead { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
-.sb-name { white-space: nowrap; }
-.sb-name.ours { font-weight: 600; color: var(--accent); }
-.meter { display: flex; align-items: center; gap: 8px; }
-.meter .track { flex: 1; height: 10px; background: var(--sunk); border-radius: 3px; overflow: hidden; }
-.meter .fill { height: 100%; background: var(--faint); border-radius: 3px; }
-.meter.ours .fill { background: var(--accent); }
-.meter b { font-family: var(--mono); font-weight: 500; font-size: 12.5px; min-width: 2.2em; text-align: right; font-variant-numeric: tabular-nums; }
+header { display: grid; gap: 10px; }
+.authors { color: var(--muted); }
+.tagline { font-size: 17px; max-width: 60ch; }
 
-/* figures */
 figure { margin: 0; display: grid; gap: 10px; }
 .plate { background: var(--plate); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; }
 .plate img { display: block; width: 100%; height: auto; }
-figcaption { font-size: 13.5px; color: var(--muted); max-width: 90ch; }
-figcaption b { color: var(--ink); font-weight: 600; }
+figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
 
-/* listen */
+section { display: grid; gap: 16px; }
+.sub { color: var(--muted); }
 .toolbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ground); border-bottom: 1px solid var(--rule); padding-block: 10px; display: grid; gap: 8px; }
-.tool-row { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
-.tool-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); min-width: 4.2em; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.tool-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); min-width: 3.6em; }
 .seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
 .seg button { font: inherit; font-size: 13px; line-height: 1.2; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); cursor: pointer; }
 .seg button:hover { border-color: var(--faint); }
@@ -97,367 +69,149 @@ figcaption b { color: var(--ink); font-weight: 600; }
 .seg.styles button[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--surface); }
 .seg.styles button[aria-pressed="true"]::before { background: var(--surface); }
 
-.lyric { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 20px; align-items: start; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 18px; }
-.lyric h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; }
-.lyric .id { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.lyric pre { grid-column: 1 / -1; margin: 0; font-family: var(--serif); font-size: 17px; line-height: 1.55; white-space: pre-wrap; color: var(--ink); }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); align-items: center; }
-.legend i { display: inline-block; width: 18px; height: 6px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.lyric pre { margin: 0; font-family: var(--serif); font-size: 17px; line-height: 1.5; white-space: pre-wrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 16px; height: 6px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
 
 .rows { display: grid; gap: 12px; }
-.row { display: grid; grid-template-columns: minmax(230px, 290px) minmax(0, 1fr); gap: 14px 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; }
+.row { display: grid; grid-template-columns: minmax(210px, 260px) minmax(0, 1fr); gap: 12px 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; }
 .row.ours { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
 .row.ref { background: transparent; border-style: dashed; }
 .meta { display: grid; gap: 8px; align-content: start; }
-.meta-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
-.meta-head h3 { color: var(--c, var(--ink)); }
-.badge { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; padding: 1px 7px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); }
-.desc { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+.meta h3 { color: var(--c, var(--ink)); }
+.meta .tag { font-size: 12.5px; color: var(--muted); }
 audio { width: 100%; height: 36px; }
-.pills { display: flex; flex-wrap: wrap; gap: 5px; }
-.pill { font-size: 12px; line-height: 1.3; padding: 2px 8px; border-radius: 999px; background: var(--sunk); color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.pill.hit { background: var(--hit-bg); color: var(--hit); }
-.pill.miss { background: var(--miss-bg); color: var(--miss); }
-.pill.warn { background: var(--warn-bg); color: var(--warn); }
 .score { display: grid; gap: 8px; min-width: 0; align-content: start; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--mono); font-size: 12px; }
-.chip { padding: 2px 8px; border-radius: 5px; background: var(--sunk); color: var(--ink); font-variant-numeric: tabular-nums; }
+.chip { padding: 2px 8px; border-radius: 5px; background: var(--sunk); font-variant-numeric: tabular-nums; }
 .chip b { font-weight: 500; color: var(--muted); margin-right: 2px; }
-.chip.changed { background: var(--c, var(--accent-soft)); color: var(--surface); }
+.chip.changed { background: var(--c); color: var(--surface); }
 .chip.changed b { color: inherit; opacity: 0.8; }
 .chips .dim { color: var(--muted); }
-.roll { position: relative; height: 168px; border-radius: 8px; background: var(--ground); border: 1px solid var(--rule); overflow: hidden; }
+.roll { height: 168px; border-radius: 8px; background: var(--ground); border: 1px solid var(--rule); overflow: hidden; }
 .roll canvas { display: block; width: 100%; height: 100%; cursor: pointer; }
-.broken { height: 168px; border-radius: 8px; border: 1px dashed var(--miss); display: grid; place-content: center; text-align: center; padding: 12px; gap: 4px; font-size: 13px; color: var(--miss);
-  background: repeating-linear-gradient(135deg, transparent 0 9px, var(--miss-bg) 9px 10px); }
-.broken span { color: var(--muted); font-size: 12px; }
-details.abc summary { cursor: pointer; font-size: 12.5px; color: var(--muted); width: fit-content; }
-details.abc pre { margin: 6px 0 0; max-height: 15rem; overflow: auto; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; background: var(--ground); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; white-space: pre; }
-.loading { color: var(--muted); font-size: 14px; padding: 20px 0; }
+.loading { color: var(--muted); padding: 20px 0; }
 
-/* results */
-.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; }
-table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
-th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
-th:first-child, td:first-child { text-align: left; }
-thead th { font-weight: 500; color: var(--muted); font-size: 12.5px; }
-thead tr.group th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); border-bottom: 0; padding-bottom: 0; }
-tbody tr:last-child td { border-bottom: 0; }
-tr.ours td { background: var(--accent-soft); }
-tr.ours td:first-child { font-weight: 600; color: var(--accent); }
-td.best { font-weight: 600; }
-td.total { font-weight: 600; }
-.sep { border-left: 1px solid var(--rule); }
+footer { border-top: 1px solid var(--rule); padding-top: 16px; font-size: 13px; color: var(--muted); }
 
-/* method */
-.steps { display: grid; gap: 36px; }
-.step { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 16px 32px; align-items: start; }
-.step-text { display: grid; gap: 8px; }
-.step-num { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; }
-.step h3 { font-family: var(--serif); font-size: 21px; font-weight: 600; }
-.step p { color: var(--ink); max-width: 60ch; }
-
-.notes { border-top: 1px solid var(--rule); padding-top: 20px; display: grid; gap: 8px; font-size: 13.5px; color: var(--muted); max-width: 92ch; }
-.notes h2 { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--ink); }
-.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
-
-@media (max-width: 900px) {
-  .hero { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 860px) {
   .row { grid-template-columns: minmax(0, 1fr); }
-  .step { grid-template-columns: minmax(0, 1fr); }
   .toolbar { position: static; }
 }
 @media (max-width: 520px) {
-  main { padding-inline: 16px; padding-block: 28px 48px; gap: 44px; }
-  .roll, .broken { height: 128px; }
-  .lyric { grid-template-columns: minmax(0, 1fr); }
+  main { padding-inline: 16px; padding-block: 28px 44px; gap: 36px; }
+  .roll { height: 128px; }
 }
-@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
 <main>
 
-<header class="hero" id="top">
-  <div class="hero-text">
-    <p class="eyebrow">Demo page · ICLR 2027 submission</p>
-    <h1>Music Circuit: Tracing and Controlling Style Dynamics in Large Music Generation Model</h1>
-    <p class="authors">Anonymous Authors</p>
-    <div class="prose">
-      <p>We trace how musical style is represented inside YuE2. Style forms mainly while the model writes its score, and it is carried by directions and components that change from token to token. We merge those changes into one KL-weighted direction per style and trace the MLP neurons and attention heads that drive it into a sparse circuit.</p>
-      <p>Steering that circuit writes the same lyrics in five styles <strong>without any style text</strong>. This page lets you hear the clips and see the scores the model wrote for them.</p>
-    </div>
-    <nav class="nav" aria-label="Sections">
-      <a href="#overview">Overview</a><a href="#listen">Listen</a><a href="#results">Results</a><a href="#method">Method</a><a href="#notes">About the examples</a>
-    </nav>
-  </div>
-  <aside class="scoreboard" aria-labelledby="sb-title">
-    <h2 id="sb-title">Target-style hits on the test set</h2>
-    <p class="sub">15 test lyrics × 5 styles × 2 seed pairs, 150 generations per condition. Only the style prompt uses style text.</p>
-    <div class="sb-grid" id="scoreboard">
-      <span></span><span class="colhead">CLAP</span><span class="colhead">Gemini 3.6 Flash</span>
-    </div>
-  </aside>
+<header>
+  <h1>Music Circuit: Tracing and Controlling Style Dynamics in Large Music Generation Model</h1>
+  <p class="authors">Anonymous Authors</p>
+  <p class="tagline">Steering a sparse style circuit in YuE2 writes the same lyrics in five styles, without any style text.</p>
 </header>
 
-<section id="overview">
-  <figure>
-    <div class="plate"><img src="figures/overview.png" alt="Overview of the three-step framework: stage localization, static observation across score positions, and dynamic circuit steering with KL-weighted directions." width="2167" height="898"></div>
-    <figcaption><b>Overview.</b> (1) Stage localization: swapping the empty tag for the style tag in one generation stage at a time shows that most of the style gain comes from the score stage. (2) Static observation: styles are separable at every score position, but the style directions and the heads and neurons selected for them differ across positions. (3) Dynamic circuit steering: activation differences between the style tag and the empty tag are weighted by the per-step KL divergence of the next-token distributions and summed into one direction per style, which steers the circuit.</figcaption>
-  </figure>
-</section>
+<figure>
+  <div class="plate"><img src="figures/overview.png" alt="Method overview: stage localization, static observation across score positions, and dynamic circuit steering with KL-weighted directions." width="2167" height="898"></div>
+  <figcaption>Style forms mainly in the score stage and changes across positions. We weight each step's activation difference by KL divergence into one direction per style, then steer the neurons and heads that drive it.</figcaption>
+</figure>
 
 <section id="listen">
-  <div class="section-head">
-    <h2>Listen: one lyric, five styles, no style text</h2>
-    <p class="prose muted">Every clip on a page uses the same lyric and the same seed pair. Under each player is the score YuE2 wrote before rendering the audio: the vocal melody in color, the instrumental melody in gray, bar lines and section marks behind them. Chips show the score header; a colored chip differs from the empty-tag score. Click a piano roll to play from that point.</p>
-  </div>
-
-  <div class="toolbar" id="toolbar">
+  <h2>Listen</h2>
+  <p class="sub">Same lyric, same seed. Below each clip is the score the model wrote; click it to play from there.</p>
+  <div class="toolbar">
     <div class="tool-row"><span class="tool-label">Lyric</span><div class="seg" id="lyric-seg" role="group" aria-label="Lyric"></div></div>
-    <div class="tool-row">
-      <span class="tool-label">View</span>
-      <div class="seg" id="view-seg" role="group" aria-label="View">
-        <button type="button" data-view="compare" aria-pressed="true">Compare conditions</button>
-        <button type="button" data-view="styles" aria-pressed="false">All five styles</button>
-      </div>
-    </div>
-    <div class="tool-row" id="style-row"><span class="tool-label">Style</span><div class="seg styles" id="style-seg" role="group" aria-label="Target style"></div></div>
-    <div class="tool-row" id="arm-row" hidden><span class="tool-label">Method</span><div class="seg" id="arm-seg" role="group" aria-label="Condition"></div></div>
+    <div class="tool-row"><span class="tool-label">Style</span><div class="seg styles" id="style-seg" role="group" aria-label="Target style"></div></div>
   </div>
-
-  <div id="lyric"></div>
+  <div class="lyric" id="lyric"></div>
   <div class="legend" aria-hidden="true">
-    <span><i style="background: var(--neutral)"></i>Vocal melody (empty tag)</span>
-    <span><i id="legend-vocal" style="background: var(--metal)"></i>Vocal melody (steered)</span>
-    <span><i style="background: var(--inst)"></i>Instrumental melody</span>
-    <span>Vertical line: playback position, following the written tempo</span>
+    <span><i id="legend-vocal"></i>Vocal</span>
+    <span><i style="background: var(--inst)"></i>Instrumental</span>
+    <span>Colored header: differs from the empty tag</span>
   </div>
-  <div class="rows" id="rows"><p class="loading">Loading examples…</p></div>
+  <div class="rows" id="rows"><p class="loading">Loading…</p></div>
 </section>
 
-<section id="results">
-  <div class="section-head">
-    <h2>Results on the test set</h2>
-    <p class="prose muted">Hits per style out of 30 (15 lyrics, two seed pairs). A CLAP hit needs a complete generation whose target style scores strictly highest among the five style descriptions. Gemini 3.6 Flash picks one of six options blind. Truncated generations count as misses.</p>
-  </div>
-  <div class="table-wrap"><table id="table"></table></div>
-  <p class="prose" id="length-note"></p>
-  <figure>
-    <div class="plate"><img src="figures/subjective_eval.png" alt="Bar chart of listener ratings for baseline, style prompt and circuit clips." width="2200" height="472"></div>
-    <figcaption><b>Subjective evaluation (preliminary).</b> Listeners rate three anonymized clips of the same lyric and seed (empty tag, style prompt and circuit) for style fit from 1 to 5 and pick the closest. Circuit and prompt are both rated well above the baseline; neither is significantly ahead of the other.</figcaption>
-  </figure>
-</section>
-
-<section id="method">
-  <div class="section-head">
-    <h2>How the circuit is found</h2>
-    <p class="prose muted">Three steps, each answering one question about style inside the model. Figures are from the paper.</p>
-  </div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-text">
-        <span class="step-num">Step 1 · Where</span>
-        <h3>Style forms while the score is written</h3>
-        <p>Replacing the empty tag with the style tag in one generation stage at a time shows that the score-planning stage accounts for about three quarters of the style effect, the music-token stage for one quarter, and acoustic rendering for almost none.</p>
-      </div>
-      <figure><div class="plate"><img src="figures/stage_factorial_a.png" alt="Shapley decomposition of the style-tag effect across the three generation stages." width="1056" height="672" loading="lazy"></div>
-        <figcaption>Stage-wise style-tag ablation on the 54 representation-analysis lyrics.</figcaption></figure>
-    </div>
-    <div class="step">
-      <div class="step-text">
-        <span class="step-num">Step 2 · What form</span>
-        <h3>Style is dynamic across score positions</h3>
-        <p>The five styles separate at every score position, and each position's direction is reproducible. The directions, and the neurons and heads selected for them, barely overlap between positions: style is not one fixed vector but a representation that changes as the score is written.</p>
-      </div>
-      <figure><div class="plate"><img src="figures/cross_position_stability.png" alt="Cosine similarity of directions and Jaccard overlap of selected components across score positions." width="2200" height="760" loading="lazy"></div>
-        <figcaption>Across score positions: (a) cosine between directions; (b, c) overlap of the selected MLP neurons and attention heads.</figcaption></figure>
-    </div>
-    <div class="step">
-      <div class="step-text">
-        <span class="step-num">Step 3 · Which components</span>
-        <h3>A sparse circuit causally controls style</h3>
-        <p>Weighting each step by the KL divergence between the style-tag and empty-tag predictions gives one direction per style. Zeroing only 0.23% of the MLP neurons that drive it moves the output about 80% as far from the style-tag output as removing the tag. Random components of the same number barely matter.</p>
-      </div>
-      <figure><div class="plate"><img src="figures/circuit_klw_causal.png" alt="Ablation and enhancement curves for MLP neurons and attention heads against the number of edited components." width="2200" height="760" loading="lazy"></div>
-        <figcaption>Ablation and enhancement against the number of edited components; gray lines are random components.</figcaption></figure>
-    </div>
-    <div class="step">
-      <div class="step-text">
-        <span class="step-num">What changes</span>
-        <h3>Keys and instruments move the way the prompt moves them</h3>
-        <p>The circuit shifts keys toward each style's typical key (D♯m or C♯m for metal, minor keys for funk and blues, major keys for country) and changes the instrumentation the way the prompt does: distorted guitar and heavy drums for metal, slap bass for funk, pedal steel and banjo for country.</p>
-      </div>
-      <figure><div class="plate"><img src="figures/key_instrumentation.png" alt="Key distribution and instrumentation changes per style and condition." width="2200" height="968" loading="lazy"></div>
-        <figcaption>Changes of the score's key (a) and of the instrumentation (b) on the test set.</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<footer class="notes" id="notes">
-  <h2>About the examples</h2>
-  <ul>
-    <li>Lyrics: the first test lyric of each of the eight scene families in the test set (the lyric used for tuning is left out). Seed pair 1. Every condition and style is shown as generated; no clip was selected or regenerated.</li>
-    <li>Conditions: the empty-tag baseline (shared by all styles); the style prompt, with style text in all three stages; our dynamic circuit (α = 0.5); CAA, which adds the mean style-minus-empty residual at one layer at every score step; and a random circuit with the same recipe and injection norm but components disjoint from the target. CAA and both circuits share the same music-token intervention.</li>
-    <li>Scores: the ABC score from the planning stage, drawn with the key signature applied. The playback line follows the written tempo, so it can drift a few percent from the audio. CAA often derails the score into text that is not valid ABC; YuE2 still renders audio from it, and the raw text is shown instead of a piano roll.</li>
-    <li>Audio: 72 kbps MP3 of the 48 kHz outputs.</li>
-  </ul>
-</footer>
+<footer>Eight test lyrics, one seed pair, every clip as generated. Audio: 72 kbps MP3.</footer>
 
 </main>
 
 <script>
 (() => {
   const STYLE = {
-    pop_ballad: { name: "Pop", full: "contemporary pop", v: "--pop" },
-    metal_punk: { name: "Metal", full: "metal rock", v: "--metal" },
-    funk: { name: "Funk", full: "classic funk", v: "--funk" },
-    jazz_blues: { name: "Blues", full: "electric blues", v: "--blues" },
-    country_folk: { name: "Country", full: "country", v: "--country" },
+    pop_ballad: { name: "Pop", v: "--pop" },
+    metal_punk: { name: "Metal", v: "--metal" },
+    funk: { name: "Funk", v: "--funk" },
+    jazz_blues: { name: "Blues", v: "--blues" },
+    country_folk: { name: "Country", v: "--country" },
   };
-  const ARM = {
-    baseline: { name: "Empty tag", desc: "No style text. The same clip serves as the reference for every style." },
-    prompt_full: { name: "Style prompt", desc: "Style text in all three generation stages." },
-    abc_klw_g0p5: { name: "Dynamic circuit", desc: "No style text. Injects the KL-weighted style direction through the sparse circuit.", ours: true },
-    caa_l4_c2p0: { name: "CAA", desc: "No style text. Adds the mean style-minus-empty residual at one layer at every score step." },
-    random_klw: { name: "Random circuit", desc: "No style text. Same recipe and injection norm, random components." },
-  };
-  const COMPARE = ["prompt_full", "abc_klw_g0p5", "caa_l4_c2p0", "random_klw"];
-  const state = { song: null, style: "metal_punk", view: "compare", arm: "abc_klw_g0p5" };
+  const ROWS = [
+    { arm: "baseline", name: "Empty tag", tag: "No style text" },
+    { arm: "prompt_full", name: "Style prompt", tag: "Style text" },
+    { arm: "abc_klw_g0p5", name: "Circuit (ours)", tag: "No style text", ours: true },
+  ];
+  const state = { song: null, style: "metal_punk" };
   const cache = {};
   let INDEX = null, rolls = [], active = null, raf = 0;
 
   const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.createElement(tag), props); kids.forEach(k => k != null && e.append(k)); return e; };
-  const sign = x => (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(3);
-  const top = clip => INDEX.styles[clip.clap.indexOf(Math.max(...clip.clap))];
 
-  /* ---------- scoreboard and table ---------- */
-  function scoreboard() {
-    const grid = document.getElementById("scoreboard");
-    const order = ["abc_klw_g0p5", "caa_l4_c2p0", "prompt_full", "random_klw", "baseline"];
-    for (const a of order) {
-      const t = INDEX.table[a], ours = !!ARM[a].ours;
-      grid.append(el("span", { className: "sb-name" + (ours ? " ours" : ""), textContent: ARM[a].name + (ours ? " (ours)" : "") }));
-      for (const k of ["clap", "gemini"]) {
-        const m = el("div", { className: "meter" + (ours ? " ours" : "") });
-        const track = el("div", { className: "track" }, el("div", { className: "fill" }));
-        track.firstChild.style.width = (t[k] / t.n * 100).toFixed(1) + "%";
-        m.append(track, el("b", { textContent: t[k] }));
-        m.setAttribute("aria-label", `${ARM[a].name}, ${k === "clap" ? "CLAP" : "Gemini"}: ${t[k]} of ${t.n}`);
-        grid.append(m);
-      }
-    }
-  }
-
-  function table() {
-    const T = INDEX.table, S = INDEX.styles, rows = ["baseline", "prompt_full", "random_klw", "caa_l4_c2p0", "abc_klw_g0p5"];
-    const best = {};
-    for (const j of ["clap", "gemini"]) {
-      for (const s of S) best[j + s] = Math.max(...rows.map(a => T[a][j + "_by_style"][s]));
-      best[j] = Math.max(...rows.map(a => T[a][j]));
-    }
-    const head = `<thead><tr class="group"><th></th><th colspan="6">CLAP</th><th colspan="6" class="sep">Gemini 3.6 Flash</th><th colspan="2" class="sep"></th></tr>
-      <tr><th>Condition</th>${S.map(s => `<th>${STYLE[s].name}</th>`).join("")}<th>Total</th>${S.map((s, i) => `<th${i ? "" : ' class="sep"'}>${STYLE[s].name}</th>`).join("")}<th>Total</th><th class="sep">Truncated</th><th>Mean length</th></tr></thead>`;
-    const body = rows.map(a => {
-      const t = T[a];
-      const cells = j => S.map((s, i) => `<td class="${t[j + "_by_style"][s] === best[j + s] ? "best" : ""}${j === "gemini" && !i ? " sep" : ""}">${t[j + "_by_style"][s]}</td>`).join("") + `<td class="total${t[j] === best[j] ? " best" : ""}">${t[j]}</td>`;
-      return `<tr class="${ARM[a].ours ? "ours" : ""}"><td>${ARM[a].name}${ARM[a].ours ? " (ours)" : ""}</td>${cells("clap")}${cells("gemini")}<td class="sep">${t.incomplete}</td><td>${Math.round(t.mean_seconds)} s</td></tr>`;
-    }).join("");
-    document.getElementById("table").innerHTML = head + `<tbody>${body}</tbody>`;
-    const c = T.caa_l4_c2p0, o = T.abc_klw_g0p5, p = T.prompt_full;
-    document.getElementById("length-note").textContent =
-      `Compared with CAA, the circuit's advantage is stability. Adding the same vector at every score step often derails generation: CAA truncates ${c.incomplete} of ${c.n} generations against ${o.incomplete} for the circuit and runs about twice as long (${Math.round(c.mean_seconds)} s against ${Math.round(o.mean_seconds)} s; the style prompt averages ${Math.round(p.mean_seconds)} s). The random circuit performs like the empty-tag baseline, so the effect comes from the selected components rather than from the injection itself.`;
-  }
-
-  /* ---------- toolbar ---------- */
   function toolbar() {
     const lyr = document.getElementById("lyric-seg");
-    INDEX.songs.forEach(s => lyr.append(el("button", { type: "button", textContent: s.title.split(" / ")[0], title: `${s.title} (${s.id})`, onclick: () => { state.song = s.id; render(); } })));
+    INDEX.songs.forEach(s => lyr.append(el("button", { type: "button", textContent: s.title.split(" / ")[0], onclick: () => { state.song = s.id; render(); } })));
     const sty = document.getElementById("style-seg");
-    INDEX.styles.forEach(s => { const b = el("button", { type: "button", textContent: STYLE[s].name, title: STYLE[s].full, onclick: () => { state.style = s; render(); } }); b.style.setProperty("--c", `var(${STYLE[s].v})`); sty.append(b); });
-    const arm = document.getElementById("arm-seg");
-    COMPARE.forEach(a => arm.append(el("button", { type: "button", textContent: ARM[a].name, onclick: () => { state.arm = a; render(); } })));
-    arm.dataset.keys = COMPARE.join(",");
-    document.querySelectorAll("#view-seg button").forEach(b => b.onclick = () => { state.view = b.dataset.view; render(); });
+    INDEX.styles.forEach(s => {
+      const b = el("button", { type: "button", textContent: STYLE[s].name, onclick: () => { state.style = s; render(); } });
+      b.style.setProperty("--c", `var(${STYLE[s].v})`);
+      sty.append(b);
+    });
   }
 
   function syncToolbar() {
     document.querySelectorAll("#lyric-seg button").forEach((b, i) => b.setAttribute("aria-pressed", String(INDEX.songs[i].id === state.song)));
     document.querySelectorAll("#style-seg button").forEach((b, i) => b.setAttribute("aria-pressed", String(INDEX.styles[i] === state.style)));
-    document.querySelectorAll("#arm-seg button").forEach((b, i) => b.setAttribute("aria-pressed", String(COMPARE[i] === state.arm)));
-    document.querySelectorAll("#view-seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === state.view)));
-    document.getElementById("style-row").hidden = state.view !== "compare";
-    document.getElementById("arm-row").hidden = state.view !== "styles";
-    document.getElementById("legend-vocal").style.background = state.view === "compare" ? `var(${STYLE[state.style].v})`
-      : `linear-gradient(90deg, ${INDEX.styles.map(s => `var(${STYLE[s].v})`).join(", ")})`;
+    document.getElementById("legend-vocal").style.background = `var(${STYLE[state.style].v})`;
   }
 
-  /* ---------- rows ---------- */
-  async function load(id) {
-    if (!cache[id]) cache[id] = fetch(`data/${id}.json`).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
-    return cache[id];
-  }
-
-  function pills(clip, style) {
-    const box = el("div", { className: "pills" });
-    if (!style) {
-      box.append(el("span", { className: "pill", textContent: `CLAP top: ${STYLE[top(clip)].name}` }));
-      if (clip.gemini) box.append(el("span", { className: "pill", textContent: `Gemini: ${STYLE[clip.gemini].name}` }));
-      return box;
-    }
-    if (!clip.complete) box.append(el("span", { className: "pill warn", textContent: "Truncated, counted as miss" }));
-    box.append(clip.hit
-      ? el("span", { className: "pill hit", textContent: `CLAP hit ${sign(clip.margin)}` })
-      : el("span", { className: "pill miss", textContent: `CLAP miss · top ${STYLE[top(clip)].name}` }));
-    if (clip.gemini) box.append(el("span", { className: "pill " + (clip.gemini_hit ? "hit" : "miss"), textContent: `Gemini: ${STYLE[clip.gemini].name}` }));
-    return box;
-  }
+  const load = id => cache[id] || (cache[id] = fetch(`data/${id}.json`).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }));
 
   function chips(clip, base, colorVar) {
     const box = el("div", { className: "chips" });
-    const fields = [["K", clip.K], ["Q", clip.Q ? `♩=${clip.Q}` : ""], ["M", clip.M], ["L", clip.L]];
-    const baseVals = { K: base.K, Q: base.Q ? `♩=${base.Q}` : "", M: base.M, L: base.L };
-    for (const [k, v] of fields) {
-      if (!v) continue;
-      const c = el("span", { className: "chip" }, el("b", { textContent: k + ":" }), v);
-      if (clip !== base && v !== baseVals[k]) { c.classList.add("changed"); c.style.setProperty("--c", `var(${colorVar})`); c.title = `Empty tag: ${baseVals[k] || "—"}`; }
+    const val = c => ({ K: c.K, Q: c.Q ? `♩=${c.Q}` : "", M: c.M });
+    const v = val(clip), b = val(base);
+    for (const k of ["K", "Q", "M"]) {
+      if (!v[k]) continue;
+      const c = el("span", { className: "chip" }, el("b", { textContent: k + ":" }), v[k]);
+      if (clip !== base && v[k] !== b[k]) { c.classList.add("changed"); c.style.setProperty("--c", `var(${colorVar})`); }
       box.append(c);
     }
-    box.append(el("span", { className: "dim", textContent: `${clip.bars} bars · ${Math.round(clip.seconds)} s` }));
+    box.append(el("span", { className: "dim", textContent: `${clip.bars} bars` }));
     return box;
   }
 
-  function row({ clip, base, title, colorVar, desc, ours, ref, style, badge }) {
-    const r = el("article", { className: "row" + (ours ? " ours" : "") + (ref ? " ref" : "") });
-    const head = el("div", { className: "meta-head" }, el("h3", { textContent: title }));
-    if (!ref) head.firstChild.style.setProperty("--c", `var(${colorVar})`);
-    if (badge) head.append(el("span", { className: "badge", textContent: badge }));
+  function row(spec, clip, base) {
+    const colorVar = spec.arm === "baseline" ? "--neutral" : STYLE[state.style].v;
+    const r = el("article", { className: "row" + (spec.ours ? " ours" : "") + (spec.arm === "baseline" ? " ref" : "") });
+    const h = el("h3", { textContent: spec.name });
+    if (spec.arm !== "baseline") h.style.setProperty("--c", `var(${colorVar})`);
     const audio = el("audio", { controls: true, preload: "none", src: clip.audio });
-    const meta = el("div", { className: "meta" }, head, el("p", { className: "desc", textContent: desc }), audio, pills(clip, style));
-    const score = el("div", { className: "score" });
-    if (clip.readable) {
-      score.append(chips(clip, base, colorVar));
-      const wrap = el("div", { className: "roll" });
-      const cv = el("canvas", { tabIndex: 0 });
-      cv.setAttribute("role", "img");
-      cv.setAttribute("aria-label", `Piano roll of the score: ${clip.bars} bars, key ${clip.K}, tempo ${clip.Q}. Click to play from a point.`);
-      wrap.append(cv);
-      score.append(wrap);
-      rolls.push({ cv, clip, audio, color: colorVar });
-      cv.addEventListener("click", e => seek(cv, clip, audio, e));
-      cv.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); audio.paused ? audio.play() : audio.pause(); } });
-    } else {
-      score.append(el("div", { className: "chips" }, el("span", { className: "dim", textContent: `${Math.round(clip.seconds)} s of audio` })));
-      score.append(el("div", { className: "broken" }, "The score derailed into text that is not valid ABC.", el("span", { textContent: "YuE2 still rendered audio from it. Raw score below." })));
-    }
-    const det = el("details", { className: "abc" }, el("summary", { textContent: "Show ABC score" }), el("pre", { textContent: clip.abc }));
-    if (!clip.readable) det.open = false;
-    score.append(det);
-    audio.addEventListener("play", () => { document.querySelectorAll("audio").forEach(a => { if (a !== audio) a.pause(); }); active = rolls.find(x => x.audio === audio) || null; loop(); });
-    audio.addEventListener("pause", () => drawAll());
-    audio.addEventListener("ended", () => drawAll());
-    r.append(meta, score);
+    r.append(el("div", { className: "meta" }, h, el("span", { className: "tag", textContent: spec.tag }), audio));
+    const score = el("div", { className: "score" }, chips(clip, base, colorVar));
+    const cv = el("canvas", { tabIndex: 0 });
+    cv.setAttribute("role", "img");
+    cv.setAttribute("aria-label", `Score: ${clip.bars} bars, key ${clip.K}. Click to play from a point.`);
+    score.append(el("div", { className: "roll" }, cv));
+    r.append(score);
+    const entry = { cv, clip, audio, color: colorVar };
+    rolls.push(entry);
+    cv.addEventListener("click", e => seek(entry, e));
+    cv.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); audio.paused ? audio.play() : audio.pause(); } });
+    audio.addEventListener("play", () => { document.querySelectorAll("audio").forEach(a => { if (a !== audio) a.pause(); }); active = entry; loop(); });
+    audio.addEventListener("pause", drawAll);
+    audio.addEventListener("ended", drawAll);
     return r;
   }
 
@@ -466,39 +220,22 @@ td.total { font-weight: 600; }
     const box = document.getElementById("rows");
     let d;
     try { d = await load(state.song); }
-    catch (e) { box.replaceChildren(el("p", { className: "loading", textContent: "The examples could not be loaded. Serve this folder over HTTP (for example GitHub Pages) rather than opening the file directly." })); return; }
+    catch (e) { box.replaceChildren(el("p", { className: "loading", textContent: "Examples could not be loaded. Open this page over HTTP." })); return; }
     document.querySelectorAll("audio").forEach(a => a.pause());
     rolls = []; active = null;
-    const lyric = document.getElementById("lyric");
-    lyric.replaceChildren(el("div", { className: "lyric" },
-      el("h3", { textContent: d.title.split(" / ")[0] }), el("span", { className: "id", textContent: `${d.title.split(" / ")[1] || ""} · ${d.id}` }),
-      el("pre", { textContent: d.lyrics.replace(/^\[Verse\]\n/, "") })));
-    const list = [];
-    list.push(row({ clip: d.baseline, base: d.baseline, title: ARM.baseline.name, colorVar: "--neutral", desc: ARM.baseline.desc, ref: true, badge: "reference" }));
-    if (state.view === "compare") {
-      for (const a of COMPARE) {
-        const c = d.clips[`${state.style}|${a}`];
-        list.push(row({ clip: c, base: d.baseline, title: ARM[a].name, colorVar: STYLE[state.style].v, desc: ARM[a].desc, ours: ARM[a].ours, style: state.style, badge: ARM[a].ours ? "ours" : "" }));
-      }
-    } else {
-      for (const s of INDEX.styles) {
-        const c = d.clips[`${s}|${state.arm}`];
-        list.push(row({ clip: c, base: d.baseline, title: `${STYLE[s].name}`, colorVar: STYLE[s].v, desc: `${ARM[state.arm].name}${ARM[state.arm].ours ? " (ours)" : ""} toward ${STYLE[s].full}.`, ours: false, style: s }));
-      }
-    }
-    box.replaceChildren(...list);
+    document.getElementById("lyric").replaceChildren(el("pre", { textContent: d.lyrics.replace(/^\[Verse\]\n/, "") }));
+    box.replaceChildren(...ROWS.map(spec => row(spec, spec.arm === "baseline" ? d.baseline : d.clips[`${state.style}|${spec.arm}`], d.baseline)));
     drawAll();
   }
 
-  /* ---------- piano roll ---------- */
   function extent() {
-    let beats = 0, lo = 127, hi = 0;
+    let beats = 16, lo = 127, hi = 0;
     for (const r of rolls) {
       beats = Math.max(beats, r.clip.bars * r.clip.barBeats);
       for (const n of r.clip.notes) { beats = Math.max(beats, n[1] + n[2]); lo = Math.min(lo, n[3]); hi = Math.max(hi, n[3]); }
     }
     if (hi - lo < 24) { const mid = (hi + lo) / 2; lo = Math.floor(mid - 12); hi = Math.ceil(mid + 12); }
-    return { beats: Math.max(beats, 16), lo: lo - 1, hi: hi + 1 };
+    return { beats, lo: lo - 1, hi: hi + 1 };
   }
 
   function draw(r, scale, playBeat) {
@@ -509,37 +246,37 @@ td.total { font-weight: 600; }
     const ctx = cv.getContext("2d");
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    const padTop = 16, plotH = h - padTop - 4, rows = scale.hi - scale.lo + 1, nh = plotH / rows;
+    const padTop = 16, plotH = h - padTop - 4, nh = plotH / (scale.hi - scale.lo + 1);
     const x = b => b / scale.beats * w, y = p => padTop + (scale.hi - p) * nh;
     const end = x(clip.bars * clip.barBeats);
     ctx.fillStyle = css("--sunk"); ctx.fillRect(end, 0, w - end, h);
     ctx.fillStyle = css("--rule");
-    for (let i = 0; i <= clip.bars; i++) { const xx = Math.round(x(i * clip.barBeats)); ctx.globalAlpha = i % 4 === 0 ? 1 : 0.45; ctx.fillRect(xx, padTop, 1, plotH); }
+    for (let i = 0; i <= clip.bars; i++) { ctx.globalAlpha = i % 4 === 0 ? 1 : 0.45; ctx.fillRect(Math.round(x(i * clip.barBeats)), padTop, 1, plotH); }
     ctx.globalAlpha = 1;
     ctx.font = `500 10px ${css("--mono")}`; ctx.textBaseline = "middle";
-    let lastLabel = -1e9;
+    let last = -1e9;
     for (const [name, beat] of clip.sections) {
       const xx = x(beat);
       ctx.fillStyle = css("--faint"); ctx.fillRect(Math.round(xx), 0, 1, padTop);
-      if (name && xx - lastLabel > 52) { ctx.fillStyle = css("--muted"); ctx.fillText(name, xx + 4, 8); lastLabel = xx; }
+      if (name && xx - last > 52) { ctx.fillStyle = css("--muted"); ctx.fillText(name, xx + 4, 8); last = xx; }
     }
     const nhDraw = Math.max(2.5, nh - 0.4);
-    ctx.fillStyle = css("--inst");
-    for (const n of clip.notes) if (n[0] === "i") ctx.fillRect(x(n[1]), y(n[3]), Math.max(1.5, x(n[2]) - 0.8), nhDraw);
-    ctx.fillStyle = css(r.color);
-    for (const n of clip.notes) if (n[0] === "v") ctx.fillRect(x(n[1]), y(n[3]), Math.max(1.5, x(n[2]) - 0.8), nhDraw);
+    for (const [voice, color] of [["i", "--inst"], ["v", r.color]]) {
+      ctx.fillStyle = css(color);
+      for (const n of clip.notes) if (n[0] === voice) ctx.fillRect(x(n[1]), y(n[3]), Math.max(1.5, x(n[2]) - 0.8), nhDraw);
+    }
     if (playBeat != null) { ctx.fillStyle = css("--ink"); ctx.fillRect(Math.round(x(playBeat)) - 1, 0, 2, h); }
   }
 
-  function playBeat(r) { return r.clip.Q && r.audio.currentTime > 0 ? r.audio.currentTime * r.clip.Q / 60 : null; }
-  function drawAll() { const s = extent(); rolls.forEach(r => draw(r, s, r.audio.currentTime > 0 && !r.audio.ended ? playBeat(r) : null)); }
+  const beatOf = r => r.clip.Q && r.audio.currentTime > 0 && !r.audio.ended ? r.audio.currentTime * r.clip.Q / 60 : null;
+  function drawAll() { const s = extent(); rolls.forEach(r => draw(r, s, beatOf(r))); }
   function loop() {
     cancelAnimationFrame(raf);
     const s = extent();
-    const tick = () => { if (!active || active.audio.paused) return; draw(active, s, playBeat(active)); raf = requestAnimationFrame(tick); };
+    const tick = () => { if (!active || active.audio.paused) return; draw(active, s, beatOf(active)); raf = requestAnimationFrame(tick); };
     raf = requestAnimationFrame(tick);
   }
-  function seek(cv, clip, audio, e) {
+  function seek({ cv, clip, audio }, e) {
     if (!clip.Q) return;
     const rect = cv.getBoundingClientRect();
     const t = (e.clientX - rect.left) / rect.width * extent().beats * 60 / clip.Q;
@@ -547,17 +284,17 @@ td.total { font-weight: 600; }
     if (audio.readyState >= 1) go(); else { audio.addEventListener("loadedmetadata", go, { once: true }); audio.load(); }
   }
 
-  new ResizeObserver(() => drawAll()).observe(document.getElementById("rows"));
+  new ResizeObserver(drawAll).observe(document.getElementById("rows"));
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawAll);
   new MutationObserver(drawAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   if (document.fonts) document.fonts.ready.then(drawAll);
 
   fetch("data/index.json").then(r => r.json()).then(idx => {
     INDEX = idx;
-    state.song = idx.songs.find(s => s.id === "scaled_032") ? "scaled_032" : idx.songs[0].id;
-    scoreboard(); table(); toolbar(); render();
+    state.song = idx.songs.some(s => s.id === "scaled_032") ? "scaled_032" : idx.songs[0].id;
+    toolbar(); render();
   }).catch(() => {
-    document.getElementById("rows").replaceChildren(el("p", { className: "loading", textContent: "The examples could not be loaded. Serve this folder over HTTP (for example GitHub Pages) rather than opening the file directly." }));
+    document.getElementById("rows").replaceChildren(el("p", { className: "loading", textContent: "Examples could not be loaded. Open this page over HTTP." }));
   });
 })();
 </script>
